@@ -14,7 +14,7 @@ env:
 jobs:
   verify-version:
     name: Verify tag matches version
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
 
     steps:
       - name: Checkout
@@ -33,7 +33,7 @@ jobs:
 
   ci-green:
     name: CI is green on tagged commit
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     needs: verify-version
     permissions:
       contents: read
@@ -81,7 +81,7 @@ jobs:
   publish:
     name: Publish to crates.io
     needs: ci-green
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     permissions:
       contents: read
       id-token: write

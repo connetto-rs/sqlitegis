@@ -20,7 +20,7 @@ env:
 jobs:
   sqlite-perf:
     name: SQLite Performance Assertions
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     timeout-minutes: 40
     env:
       RUST_TEST_THREADS: 1

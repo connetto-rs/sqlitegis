@@ -300,49 +300,32 @@ jobs:
       - uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2
       - run: cargo test -p sqlitegis --features diesel-postgres --test diesel_postgres_integration
 
-  # Cross-compile the library for the iOS device, iOS simulator, and Android
-  # arm64 targets. Compile-only check (no test execution), but catches link
-  # regressions and missing target-conditional code paths before the slower
-  # simulator/emulator jobs run.
+  # Cross-compile the library for the Android arm64 target. Compile-only
+  # check (no test execution) that catches link regressions and missing
+  # target-conditional code paths before the slower emulator job runs.
   mobile-build:
-    name: Mobile Build Check (${{ matrix.name }})
-    runs-on: ${{ matrix.os }}
+    name: Mobile Build Check (Android arm64)
+    runs-on: ubuntu-26.04
     timeout-minutes: 30
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - name: iOS Device (arm64)
-            os: macos-latest
-            target: aarch64-apple-ios
-          - name: iOS Simulator (arm64)
-            os: macos-latest
-            target: aarch64-apple-ios-sim
-          - name: Android (arm64)
-            os: ubuntu-26.04
-            target: aarch64-linux-android
-            setup_android_ndk: true
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: dtolnay/rust-toolchain@stable
         with:
-          targets: ${{ matrix.target }}
+          targets: aarch64-linux-android
       - uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2
 
       - name: Setup Android NDK
-        if: matrix.setup_android_ndk
         uses: nttld/setup-ndk@ed92fe6cadad69be94a966a7ee3271275e62f779 # v1
         with:
           ndk-version: r27c
 
       - name: Configure Android toolchain env
-        if: matrix.setup_android_ndk
         run: |
           echo "CC_aarch64_linux_android=${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android21-clang" >> "$GITHUB_ENV"
           echo "AR_aarch64_linux_android=${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ar" >> "$GITHUB_ENV"
 
       - name: Check mobile build
-        run: cargo check -p sqlitegis --lib --features diesel-sqlite,bundled-sqlite --target ${{ matrix.target }}
+        run: cargo check -p sqlitegis --lib --features diesel-sqlite,bundled-sqlite --target aarch64-linux-android
 
   # Boot a real iOS simulator via xcrun simctl and run the sqlitegis test
   # suite through it as the cargo test runner. Catches runtime regressions

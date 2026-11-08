@@ -24,8 +24,13 @@ yanked = "deny"
 # Flag crates flagged unmaintained anywhere in the tree, including transitive
 # dependencies, so we notice rot early.
 unmaintained = "all"
-# Document every ignored advisory with an inline reason. Empty = no exceptions.
-ignore = []
+# Document every ignored advisory with an inline reason.
+ignore = [
+    # astral-tokio-tar is unmaintained and only the dev-dependency testcontainers
+    # pulls it, whose newest release still requires it. Drop this entry once a
+    # testcontainers release does not.
+    { id = "RUSTSEC-2026-0440", reason = "dev-only through testcontainers, no release without it" },
+]
 
 [licenses]
 # Permissive licenses compatible with this crate's MIT OR Apache-2.0 terms.

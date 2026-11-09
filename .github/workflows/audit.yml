@@ -1,0 +1,41 @@
+name: Audit
+
+on:
+  pull_request:
+    paths:
+      - Cargo.lock
+      - "**/Cargo.toml"
+      - deny.toml
+      - .cargo/audit.toml
+      - .github/workflows/audit.yml
+  push:
+    branches: [main]
+    paths:
+      - Cargo.lock
+      - "**/Cargo.toml"
+      - deny.toml
+      - .cargo/audit.toml
+      - .github/workflows/audit.yml
+  schedule:
+    - cron: "0 5 * * 1"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  audit:
+    name: Security Audit
+    runs-on: ubuntu-26.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: dtolnay/rust-toolchain@stable
+      - run: cargo install cargo-audit --quiet
+      - run: cargo audit

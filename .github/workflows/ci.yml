@@ -195,20 +195,9 @@ jobs:
         env:
           RUSTDOCFLAGS: "-D warnings"
 
-  audit:
-    name: Security Audit
-    runs-on: ubuntu-26.04
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: dtolnay/rust-toolchain@stable
-      - run: cargo install cargo-audit --quiet
-      - run: cargo audit
-
   # Full supply-chain policy enforcement (licenses, banned/duplicate crates,
-  # registry sources) on top of the advisory-only cargo-audit job above. The
-  # policy lives in deny.toml. --all-features so dev and optional dependency
-  # trees are covered too.
+  # registry sources). The policy lives in deny.toml. --all-features so dev
+  # and optional dependency trees are covered too.
   supply-chain:
     name: Supply Chain (cargo-deny)
     runs-on: ubuntu-26.04

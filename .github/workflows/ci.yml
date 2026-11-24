@@ -154,7 +154,7 @@ jobs:
       # Pin to the wasm-bindgen version recorded in Cargo.lock so the CLI
       # and the .wasm file schema versions match. taiki-e/install-action
       # defaults to latest, which periodically drifts ahead of our lock.
-      - uses: taiki-e/install-action@c509219cf42fba86913069efd0ade2458c59337b # v2
+      - uses: taiki-e/install-action@3a3daafd3b7f23b8f65d9f5ba2db203fb59b79e2 # v2
         with:
           tool: wasm-bindgen-cli@0.2.121
       - run: cargo test -p sqlitegis --features sqlite --target wasm32-unknown-unknown --test sqlite_wasm
@@ -175,7 +175,7 @@ jobs:
       # Pin to the wasm-bindgen version recorded in Cargo.lock so the CLI
       # and the .wasm file schema versions match. taiki-e/install-action
       # defaults to latest, which periodically drifts ahead of our lock.
-      - uses: taiki-e/install-action@c509219cf42fba86913069efd0ade2458c59337b # v2
+      - uses: taiki-e/install-action@3a3daafd3b7f23b8f65d9f5ba2db203fb59b79e2 # v2
         with:
           tool: wasm-bindgen-cli@0.2.121
       - run: cargo test -p sqlitegis --features diesel-sqlite --target wasm32-unknown-unknown --test diesel_wasm_integration
@@ -303,7 +303,7 @@ jobs:
           targets: aarch64-unknown-linux-musl
       - uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2
       - name: Install cross
-        uses: taiki-e/install-action@c509219cf42fba86913069efd0ade2458c59337b # v2
+        uses: taiki-e/install-action@3a3daafd3b7f23b8f65d9f5ba2db203fb59b79e2 # v2
         with:
           tool: cross
       - name: Cross test build (no-run, musl)

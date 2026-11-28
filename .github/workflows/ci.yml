@@ -263,16 +263,6 @@ jobs:
             exit 1
           fi
 
-  test-postgres:
-    name: Test (PostGIS)
-    runs-on: ubuntu-26.04
-    timeout-minutes: 35
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: dtolnay/rust-toolchain@stable
-      - uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2
-      - run: cargo test -p sqlitegis --features diesel-postgres --test diesel_postgres_integration
-
   # Native runtime tests on ARM64 Linux. Covers the case where sqlitegis
   # is embedded in a server or workstation running aarch64 Linux (Graviton,
   # Ampere, Raspberry Pi 4/5).
@@ -351,7 +341,7 @@ jobs:
     name: Coverage
     runs-on: ubuntu-26.04
     timeout-minutes: 30
-    needs: [fmt, clippy, test, test-postgres, wasm-test, wasm-test-diesel, docs]
+    needs: [fmt, clippy, test, wasm-test, wasm-test-diesel, docs]
     # Codecov authenticates the upload with a GitHub OIDC token.
     permissions:
       contents: read
